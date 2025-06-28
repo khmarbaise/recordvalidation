@@ -78,7 +78,7 @@ class RecordValidationTest {
       return Stream.of(
           of(createTo().name("some invalid name!!"), "Name is invalid"),
           of(createTo().surname("some invalid surname!!"), "Surname is invalid"),
-          of(createTo().secondName("some invalid secondName!!"), "secondName is invalid"),
+          of(createTo().secondName("some invalid secondName!!"), "SecondName is invalid"),
           of(createTo().emails(List.of("Invalid Email ")), "emails contains invalid mail"),
           of(createTo().age(-1), "Age is invalid. Must be positive.")
       );
@@ -86,10 +86,10 @@ class RecordValidationTest {
 
     @ParameterizedTest
     @MethodSource
-    void testValidation(RequestDto requestDto, String expectedError) {
+    void testValidation(RequestDto requestDto, String expectedExceptionMessage) {
       assertThatExceptionOfType(IllegalArgumentException.class)
           .isThrownBy(() -> Validation.validationMethod(requestDto))
-          .withMessage(expectedError);
+          .withMessage(expectedExceptionMessage);
     }
 
   }

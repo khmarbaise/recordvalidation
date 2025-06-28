@@ -31,8 +31,8 @@ class DynamicValidationTest {
     return Stream.of(
         of("name", "some invalid name!!", "Name is invalid"),
         of("surename", "some invalid surname!!", "Surname is invalid"), // Must fail based on wrong method name "surename" instead of "surname"
-        of("surname", "some invalid surname!!", "Surname is invalid"), // Must fail based on wrong method name "surename" instead of "surname"
-        of("secondName", "some invalid secondName!!", "SecondName is invalid"), // Must fail based on wrong method name "surename" instead of "surname"
+        of("surname", "some invalid surname!!", "Surname is invalid"),
+        of("secondName", "some invalid secondName!!", "SecondName is invalid"),
         of("emails", List.of("Invalid Email "), "emails contains invalid mail")
     );
   }
@@ -56,8 +56,7 @@ class DynamicValidationTest {
    */
   @ParameterizedTest
   @MethodSource
-  void dynamicTesting(String methodName, Object value, String expectedError) {
-    System.out.println("this.existingMethods = " + this.existingMethods);
+  void dynamicTesting(String methodName, Object value, String expectedExceptionMessage) {
     assertThat(this.existingMethods)
         .as("The method '%s' does not exist for %s.", methodName, RequestDto.class)
         .contains(methodName);
@@ -68,7 +67,7 @@ class DynamicValidationTest {
     RequestDto requestDto = (RequestDto) ReflectionUtils.newInstance(this.constructor, this.arguments);
     assertThatExceptionOfType(IllegalArgumentException.class)
         .isThrownBy(() -> Validation.validationMethod(requestDto))
-        .withMessage(expectedError);
+        .withMessage(expectedExceptionMessage);
   }
 
 }
