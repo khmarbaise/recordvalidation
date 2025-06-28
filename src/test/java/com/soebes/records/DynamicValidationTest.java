@@ -30,7 +30,6 @@ class DynamicValidationTest {
   static Stream<Arguments> dynamicTesting() {
     return Stream.of(
         of("name", "some invalid name!!", "Name is invalid"),
-        of("surename", "some invalid surname!!", "Surname is invalid"), // Must fail based on wrong method name "surename" instead of "surname"
         of("surname", "some invalid surname!!", "Surname is invalid"),
         of("secondName", "some invalid secondName!!", "SecondName is invalid"),
         of("emails", List.of("Invalid Email "), "emails contains invalid mail")

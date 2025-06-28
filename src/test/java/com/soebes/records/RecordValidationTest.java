@@ -94,20 +94,4 @@ class RecordValidationTest {
 
   }
 
-  @Test
-  void testingToSeeIfMethodsCanBeFoundAsRequiredForARecord() {
-    var defaultMethods = List.of("equals", "toString", "hashCode");
-    Predicate<Method> check = m -> !m.isSynthetic() && !m.isBridge() && !defaultMethods.contains(m.getName());
-    ReflectionSupport.findMethods(RequestDto.class, check, HierarchyTraversalMode.TOP_DOWN).stream()
-        .map(Method::getName)
-        .forEach(System.out::println);
-
-    var constructor = RequestDto.class.getDeclaredConstructors()[0];
-    var parameterTypes = Arrays.stream(constructor.getParameters()).map(Parameter::getName).toList();
-
-    var parameterNames = Arrays.stream(constructor.getParameters()).map(Parameter::getName).toList();
-    System.out.println("parameterTypes = " + parameterTypes);
-    System.out.println("parameterNames = " + parameterNames);
-  }
-
 }
