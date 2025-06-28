@@ -45,8 +45,7 @@ class DynamicValidationTest {
     // Get the parameter names from the given constructor.
     this.parameterNames = Arrays.stream(constructor.getParameters()).map(Parameter::getName).toList();
 
-    var generatedMethods = List.of("equals", "toString", "hashCode");
-    Predicate<Method> check = m -> !m.isSynthetic() && !m.isBridge() && !generatedMethods.contains(m.getName());
+    Predicate<Method> check = m -> !List.of("equals", "toString", "hashCode").contains(m.getName());
     this.existingMethods = ReflectionSupport.findMethods(RequestDto.class, check, HierarchyTraversalMode.TOP_DOWN).stream()
         .map(Method::getName)
         .toList();
@@ -58,8 +57,9 @@ class DynamicValidationTest {
   @ParameterizedTest
   @MethodSource
   void dynamicTesting(String methodName, Object value, String expectedError) {
+    System.out.println("this.existingMethods = " + this.existingMethods);
     assertThat(this.existingMethods)
-        .as("The method '%s' does not exist for Type %s.", methodName, RequestDto.class)
+        .as("The method '%s' does not exist for %s.", methodName, RequestDto.class)
         .contains(methodName);
 
     var parameterPosition = this.parameterNames.indexOf(methodName);
